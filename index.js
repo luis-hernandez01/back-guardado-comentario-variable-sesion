@@ -13,7 +13,7 @@ app.use(bodyParser.json());
 // app.use(cors());
 
 app.use(cors({
-  origin: 'https://front-hobby.onrender.com/',
+  origin: 'https://front-hobby.onrender.com',
   credentials: true
 }));
 
