@@ -4,27 +4,28 @@ const bodyParser = require("body-parser");
 const cors = require("cors");
 
 const app = express();
-const PORT = 3000;
+const PORT = 10000;
 
 
 // Leer datos del formulario
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
-app.use(cors({
-  origin: "*", // URL de tu frontend
-  methods: ["GET", "POST"],
-  credentials: true
-}));
+app.use(cors());
+
+// 3. CONFIGURACIÓN PARA RENDER (PROXIES)
+app.set('trust proxy', 1); // Necesario para que las sesiones funcionen en Render
+
 
 // Configurar sesión
 app.use(session({
   secret: "mi_secreto",
   resave: false,
-  saveUninitialized: true,
+  saveUninitialized: false, // Mejor false para evitar crear sesiones vacías
   cookie: {
-    secure: false,      // true solo en HTTPS
-    httpOnly: true
+    secure: true,      // DEBE SER true en Render (porque usa HTTPS)
+    httpOnly: true,
+    sameSite: 'none'   // OBLIGATORIO si el frontend y backend están en dominios distintos
   }
 }));
 
@@ -59,6 +60,6 @@ app.get("/comentarios", (req, res) => {
   });
 });
 
-app.listen(PORT, () => {
+app.listen(PORT, '0.0.0.0', () => {
   console.log(`Servidor corriendo en http://localhost:${PORT}`);
 });
