@@ -10,8 +10,13 @@ const PORT = 10000;
 // Leer datos del formulario
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
+// app.use(cors());
 
-app.use(cors());
+app.use(cors({
+  origin: 'https://front-hobby.onrender.com/',
+  credentials: true
+}));
+
 
 // 3. CONFIGURACIÓN PARA RENDER (PROXIES)
 app.set('trust proxy', 1); // Necesario para que las sesiones funcionen en Render
